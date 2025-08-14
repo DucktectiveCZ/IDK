@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from context import Context
 from pygame import Surface, Rect
-from typing import NamedTuple
+from typing import NamedTuple, Self
 import pygame
 
 
@@ -26,7 +26,7 @@ class TextureBrush(Brush):
         self._cached = None
 
     @staticmethod
-    def from_file(path: str) -> "TextureBrush":
+    def from_file(path: str) -> Self:
         surface = pygame.image.load(path).convert_alpha()
         return TextureBrush(surface)
 
@@ -44,6 +44,13 @@ class TextureBrush(Brush):
 
 class ColorBrush(Brush):
     _color: Color
+
+    def __init__(self, color: Color) -> None:
+        self._color = color
+
+    @classmethod
+    def from_rgb(cls, r: int, g: int, b: int):
+        return cls(Color(r, g, b))
 
     def render(self, context: Context, dimensions: Rect) -> None:
         pygame.draw.rect(context.screen, self._color, dimensions)
