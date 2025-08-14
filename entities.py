@@ -27,6 +27,27 @@ class Entity(ABC):
         pass
 
 
+# Invokes a callback every N ticks
+class Timer(Entity):
+    delay: int
+    callback: Callable[[Context], None]
+    _ticks: int
+
+    def __init__(
+            self,
+            delay: int,
+            callback: Callable[[Context], None],
+    ) -> None:
+        self.delay = delay
+        self.callback = callback
+        self._ticks = 0
+
+    def update(self, context: Context) -> None:
+        if self._ticks >= self.delay:
+            self._ticks = 0
+            self.callback(context)
+
+
 # A button. What else do you need to know. Its a button. It does button stuff.
 class Button(Entity):
     dimensions: Rect
