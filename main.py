@@ -11,7 +11,6 @@ import traceback
 def show_error_dialog(title: str, msg: str) -> None:
     root = tk.Tk()
     root.withdraw()
-
     messagebox.showerror(title, msg)
 
 
@@ -32,9 +31,11 @@ if __name__ == '__main__':
     logging.info(f"Starting {app_title} v{app_version}...")
 
     try:
-        Game(app_title, MenuScene()).start()
+        Game(app_title, MenuScene).start()
     except RuntimeError as err:
         logging.critical(f"Critical exception: {err}")
+        logging.critical("Stack trace:")
+        traceback.print_exc()
         show_error_dialog(
             app_title,
             f"A critical error has occured: {err}"
