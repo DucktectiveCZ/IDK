@@ -15,6 +15,7 @@ class Context:
     middle_mouse_down: bool
     right_mouse_down: bool
     _game: Game
+    _current_scene: Scene
 
     @property
     def next_scene(self) -> Scene | None:
@@ -23,3 +24,7 @@ class Context:
     @next_scene.setter
     def next_scene(self, value: Scene) -> None:
         self._game.next_scene = value
+
+    @property
+    def current_scene(self) -> Scene:
+        self._current_scene
