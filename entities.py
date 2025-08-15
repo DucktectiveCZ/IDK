@@ -50,17 +50,20 @@ class Timer(Entity):
 class Button(Entity):
     dimensions: Rect
     callback: Callable[[Context], None]
-    brush: Brush
+    background: Brush
+    foreground: Brush
     _is_pressed: bool
 
     def __init__(
             self,
             dimensions: Rect,
-            brush: Brush,
+            background: Brush,
+            foreground: Brush,
             callback: Callable[[Context], None],
     ) -> None:
         self.dimensions = dimensions
-        self.brush = brush
+        self.background = background
+        self.foreground = foreground
         self.callback = callback
 
     def update(self, context: Context) -> None:
@@ -78,7 +81,8 @@ class Button(Entity):
 
     def render(self, context: Context) -> None:
         # We render the brush
-        self.brush.render(context, self.dimensions)
+        self.background.render(context, self.dimensions)
+        self.foreground.render(context, self.dimensions)
 
 
 # An entity that can be controlled using w/a/s/d and rendered as a red circle

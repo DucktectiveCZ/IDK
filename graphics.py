@@ -54,3 +54,19 @@ class ColorBrush(Brush):
 
     def render(self, context: Context, dimensions: Rect) -> None:
         pygame.draw.rect(context.screen, self._color, dimensions)
+
+class TextBrush(Brush):
+    font: pygame.font.Font
+    text: str
+    foreground: Color
+    background: Color | None
+
+    def __init__(self, font: pygame.font.Font, text: str, foreground: Color, background: Color | None) -> None:
+        self.font = font
+        self.text = text
+        self.foreground = foreground
+        self.background = background
+
+    def render(self, context: Context, dimensions: Rect) -> None:
+        surface = self.font.render(self.text, False, self.foreground, self.background)
+        context.screen.blit(surface, dimensions)

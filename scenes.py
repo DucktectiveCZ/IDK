@@ -1,8 +1,10 @@
 from abc import ABC, abstractmethod
-from entities import Entity, Button, Player
+from entities import Entity, Button, Player, Timer
 from context import Context
+import pygame
 from pygame import Rect
-from graphics import TextureBrush
+from graphics import ColorBrush, TextBrush
+import colors
 import logging
 
 
@@ -48,7 +50,13 @@ class MenuScene(Scene):
         self.children = [
             Button(
                 Rect((0, 0), (100, 100)),
-                TextureBrush.from_file('./assets/quaky.png'),
+                ColorBrush(colors.WHITE),
+                TextBrush(
+                    pygame.font.SysFont("Arial", 30), 
+                    "duk", 
+                    colors.PURPLE,
+                    None
+                ),
                 self.button_callback
             )
         ]
