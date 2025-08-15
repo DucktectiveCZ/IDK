@@ -108,13 +108,3 @@ class Player(Entity):
         # We just draw a red circle with the radius 50
         # at the position `self.x` and `self.y`.
         pygame.draw.circle(context.screen, RED, (self.y, self.x), 50)
-
-    # This gets called when the entity is spawned.
-    # We don't need that for this entity, so we just make it do nothing
-    def activated(self, context: Context) -> None:
-        pass
-
-    # This gets called when the entity is despawned.
-    # We don't need that for this entity, so we just make it do nothing
-    def deactivated(self, context: Context) -> None:
-        pass
