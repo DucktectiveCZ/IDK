@@ -8,7 +8,7 @@ import logging
 
 class Scene(ABC):
     # The name of the scene
-    name: str = '<unnamed scene>'
+    name: str
     # The entities in the scene
     children: list[Entity]
 

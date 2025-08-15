@@ -7,9 +7,6 @@ from graphics import Brush
 
 
 class Entity(ABC):
-    def __repr__(self) -> str:
-        return f"{self.__class__.__name__}{{ x={self.x}, y={self.y}}}"
-
     # Renders the entity
     def render(self, context: Context) -> None:
         pass
