@@ -1,4 +1,5 @@
 from abc import ABC
+import colors
 from context import Context
 from pygame import Rect
 import pygame
@@ -103,8 +104,6 @@ class Player(Entity):
 
     # This draws the entity onto the screen (`context.screen`).
     def render(self, context: Context) -> None:
-        # This is just the color red
-        RED = (255, 0, 0)
         # We just draw a red circle with the radius 50
         # at the position `self.x` and `self.y`.
-        pygame.draw.circle(context.screen, RED, (self.y, self.x), 50)
+        pygame.draw.circle(context.screen, colors.RED, (self.y, self.x), 50)
