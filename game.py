@@ -1,5 +1,5 @@
 import pygame
-rom pygame import Surface
+from pygame import Surface
 from pygame.time import Clock
 from scenes import Scene
 import config
@@ -52,6 +52,7 @@ class Game:
             middle_mouse_down=mmb,
             right_mouse_down=rmb,
             _game=self,
+            _current_scene=self.scene,
         )
 
     def _init(
