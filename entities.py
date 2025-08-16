@@ -111,3 +111,15 @@ class Player(Entity):
         # We just draw a red circle with the radius 50
         # at the position `self.x` and `self.y`.
         pygame.draw.circle(context.screen, colors.RED, (self.y, self.x), 50)
+
+
+class Image(Entity):
+    dimensions: Rect
+    brush: Brush
+
+    def __init__(self, dimensions: Rect, brush: Brush) -> None:
+        self.dimensions = dimensions
+        self.brush = brush
+
+    def render(self, context: Context) -> None:
+        self.brush.render(context, self.dimensions)

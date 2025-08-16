@@ -1,9 +1,9 @@
 from abc import ABC, abstractmethod
-from entities import Entity, Button, Player, Timer
+from entities import Entity, Button, Player, Timer, Image
 from context import Context
 import pygame
 from pygame import Rect
-from graphics import ColorBrush, TextBrush
+from graphics import ColorBrush, TextBrush, TextureBrush
 import colors
 import logging
 
@@ -48,21 +48,24 @@ class MenuScene(Scene):
 
     def __init__(self) -> None:
         self.children = [
+            Image(
+                Rect((0, 0), (800, 600)),
+                TextureBrush.from_file("./assets/pink_background.jpg"),
+            ),
             Button(
-                Rect((0, 0), (100, 100)),
-                ColorBrush(colors.WHITE),
+                Rect((275, 250), (250, 100)),
+                TextureBrush.from_file("./assets/play_button.png"),
                 TextBrush(
-                    pygame.font.SysFont("Arial", 30), 
-                    "duk", 
+                    pygame.font.Font("./assets/PixelifySans.ttf", 20),
+                    "",
                     colors.PURPLE,
                     None
                 ),
-                self.button_callback
+                self.play_button_callback
             )
         ]
 
-    def button_callback(self, context: Context) -> None:
-        logging.info('QUAK')
+    def play_button_callback(self, context: Context) -> None:
         context.next_scene = GameScene()
 
 
