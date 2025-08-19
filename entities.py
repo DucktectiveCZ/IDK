@@ -4,7 +4,8 @@ from context import Context
 from pygame import Rect
 import pygame
 from typing import Callable
-from graphics import Brush
+from brushes import Brush
+from graphics import Coord
 
 
 class Entity(ABC):
@@ -87,30 +88,30 @@ class Button(Entity):
 
 # An entity that can be controlled using w/a/s/d and rendered as a red circle
 class Player(Entity):
-    x: int
-    y: int
+    pos: Coord
+    speed: float
 
-    def __init__(self, x: int, y: int) -> None:
-        self.x = x
-        self.y = y
+    def __init__(self, pos: Coord, speed: float) -> None:
+        self.pos = pos
+        self.speed = speed
 
     # This gets called every frame. It's for the entity's logic
     def update(self, context: Context) -> None:
         # W/A/S/D control
         if context.keys[pygame.K_w]:
-            self.x -= 5
+            self.pos.y += self.speed
         if context.keys[pygame.K_s]:
-            self.x += 5
+            self.pos.y -= self.speed
         if context.keys[pygame.K_a]:
-            self.y -= 5
+            self.pos.x -= self.speed
         if context.keys[pygame.K_d]:
-            self.y += 5
+            self.pos.x += self.speed
 
     # This draws the entity onto the screen (`context.screen`).
     def render(self, context: Context) -> None:
         # We just draw a red circle with the radius 50
         # at the position `self.x` and `self.y`.
-        pygame.draw.circle(context.screen, colors.RED, (self.y, self.x), 50)
+        pygame.draw.circle(context.screen, colors.RED, context.denormalize(self.pos).into_tuple(), 50)
 
 
 class Image(Entity):

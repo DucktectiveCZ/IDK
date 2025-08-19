@@ -3,9 +3,11 @@ from entities import Entity, Button, Player, Timer, Image
 from context import Context
 import pygame
 from pygame import Rect
-from graphics import ColorBrush, TextBrush, TextureBrush
+from brushes import ColorBrush, TextBrush, TextureBrush
 import colors
 import logging
+
+from graphics import Coord
 
 
 class Scene(ABC):
@@ -78,5 +80,5 @@ class GameScene(Scene):
 
     def __init__(self) -> None:
         self.children = [
-            Player(0, 0),
+            Player(pos=Coord(0.0, 0.0), speed=0.05),
         ]
