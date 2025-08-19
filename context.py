@@ -4,7 +4,8 @@ from pygame import Surface
 from pygame.key import ScancodeWrapper
 from dataclasses import dataclass
 from config import Config
-from graphics import Coord, AbsoluteCoord
+from graphics import Coord, AbsoluteCoord, Rectangle, Size
+from typing import cast
 
 
 @dataclass
@@ -40,27 +41,32 @@ class Context:
     def absolute_mouse_pos(self, value: AbsoluteCoord) -> None:
         pygame.mouse.set_pos(value.into_tuple())
 
-    def normalize_one(self, x: int) -> float:
-        return (2 * x) / 2
-
     def normalize(self, coord: AbsoluteCoord) -> Coord:
         x, y = coord.into_tuple()
         width, height = self.screen.get_size()
-
+    
         nx = (2 * x) / width - 1
         ny = 1 - (2 * y) / height
-
+    
         return Coord(nx, ny)
 
-    def denormalize(self, coord: Coord) -> AbsoluteCoord:
-        nx, ny = coord.into_tuple()
+    def denormalize(self, obj: Coord | Rectangle) -> Coord | pygame.Rect:
         width, height = self.screen.get_size()
-
-        x = (nx + 1) * width / 2
-        y = (1 - ny) * height / 2
-
-        return AbsoluteCoord(int(x), int(y))
+    
+        if isinstance(obj, Coord):
+            nx, ny = obj.into_tuple()
+            x = (nx + 1) * width / 2
+            y = (1 - ny) * height / 2
+            return Coord(x, y)
+    
+        elif isinstance(obj, Rectangle):
+            nx, ny = obj.pos.into_tuple()
+            w = obj.size.width * width / 2 * 2  # full width
+            h = obj.size.height * height / 2 * 2  # full height
+            x = (nx + 1) * width / 2
+            y = (1 - ny) * height / 2 - h
+            return pygame.Rect(int(x), int(y), int(w), int(h))
 
     @property
     def normalized_mouse_pos(self) -> Coord:
-        return self.normalize(self.absolute_mouse_pos)
+        return cast(Coord, self.normalize(self.absolute_mouse_pos))

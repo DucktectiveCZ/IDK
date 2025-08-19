@@ -1,6 +1,7 @@
 import pygame
 from pygame import Surface
 from pygame.time import Clock
+from graphics import AbsoluteCoord
 from scenes import Scene
 import config
 import logging

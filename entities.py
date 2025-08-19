@@ -1,11 +1,10 @@
 from abc import ABC
 import colors
 from context import Context
-from pygame import Rect
 import pygame
-from typing import Callable
+from typing import Callable, cast
 from brushes import Brush
-from graphics import Coord
+from graphics import AbsoluteCoord, Coord, Rectangle
 
 
 class Entity(ABC):
@@ -49,7 +48,7 @@ class Timer(Entity):
 
 # A button. What else do you need to know. Its a button. It does button stuff.
 class Button(Entity):
-    dimensions: Rect
+    dimensions: Rectangle
     callback: Callable[[Context], None]
     background: Brush
     foreground: Brush
@@ -57,7 +56,7 @@ class Button(Entity):
 
     def __init__(
             self,
-            dimensions: Rect,
+            dimensions: Rectangle,
             background: Brush,
             foreground: Brush,
             callback: Callable[[Context], None],
@@ -69,21 +68,21 @@ class Button(Entity):
 
     def update(self, context: Context) -> None:
         # Store the mouse x and y as mx and my
-        mx, my = context.mouse_pos
+        mx, my = context.normalized_mouse_pos.into_tuple()
 
         # Check if the mouse is pressed and colliding with the button
         if not context.left_mouse_down:
             self._is_pressed = False
             return
 
-        if not self._is_pressed and self.dimensions.collidepoint(mx, my):
+        if not self._is_pressed and self.dimensions.contains_point(Coord(mx, my)):
             self._is_pressed = True
             self.callback(context)
 
     def render(self, context: Context) -> None:
         # We render the brush
-        self.background.render(context, self.dimensions)
-        self.foreground.render(context, self.dimensions)
+        self.background.render(context, cast(pygame.Rect, context.denormalize(self.dimensions)))
+        self.foreground.render(context, cast(pygame.Rect, context.denormalize(self.dimensions)))
 
 
 # An entity that can be controlled using w/a/s/d and rendered as a red circle
@@ -111,16 +110,16 @@ class Player(Entity):
     def render(self, context: Context) -> None:
         # We just draw a red circle with the radius 50
         # at the position `self.x` and `self.y`.
-        pygame.draw.circle(context.screen, colors.RED, context.denormalize(self.pos).into_tuple(), 50)
+        pygame.draw.circle(context.screen, colors.RED, cast(AbsoluteCoord, context.denormalize(self.pos)).into_tuple(), 50)
 
 
 class Image(Entity):
-    dimensions: Rect
+    dimensions: Rectangle
     brush: Brush
 
-    def __init__(self, dimensions: Rect, brush: Brush) -> None:
+    def __init__(self, dimensions: Rectangle, brush: Brush) -> None:
         self.dimensions = dimensions
         self.brush = brush
 
     def render(self, context: Context) -> None:
-        self.brush.render(context, self.dimensions)
+        self.brush.render(context, cast(pygame.Rect, context.denormalize(self.dimensions)))

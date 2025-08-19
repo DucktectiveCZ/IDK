@@ -3,11 +3,10 @@ from entities import Entity, Button, Player, Timer, Image
 from context import Context
 import pygame
 from pygame import Rect
-from brushes import ColorBrush, TextBrush, TextureBrush
+from brushes import TextBrush, TextureBrush
 import colors
-import logging
 
-from graphics import Coord
+from graphics import Coord, Rectangle, Size
 
 
 class Scene(ABC):
@@ -15,7 +14,6 @@ class Scene(ABC):
     name: str
     # The entities in the scene
     children: list[Entity]
-
     @abstractmethod
     def __init__(self) -> None:
         pass
@@ -51,11 +49,11 @@ class MenuScene(Scene):
     def __init__(self) -> None:
         self.children = [
             Image(
-                Rect((0, 0), (800, 600)),
+                Rectangle(Coord(-1.0, -1.0), Size(1.0, 1.0)),
                 TextureBrush.from_file("./assets/pink_background.jpg"),
             ),
             Button(
-                Rect((275, 250), (250, 100)),
+                Rectangle(Coord(0.0, 0.0), Size(0.1, 0.1)),
                 TextureBrush.from_file("./assets/play_button.png"),
                 TextBrush(
                     pygame.font.Font("./assets/PixelifySans.ttf", 20),
